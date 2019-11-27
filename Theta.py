@@ -40,6 +40,8 @@ Theta(Theta > FC) = -1000;
 
 end
 '''
+import numpy as np
+
 def Theta(params):
     sigma = params(1)
     alpha = params(2)
@@ -51,23 +53,15 @@ def Theta(params):
     K = params(8)
     
     kgrid = np.linspace(0.9*K,K,N)
-    Y = A * kgrid ** alpha
+    Y = A * kgrid ** alpha # elementwise exponential
     
     if sigma == 1:
-        Theta = math.log(Y + pk * (1-delta)*kgrid - pk * kgrid)
+        Theta = np.log(Y + pk * (1-delta)*kgrid - pk * kgrid)
     else:
         Theta = (1/(1-sigma)) * (Y + pk*(1-delta)*kgrid - pk*kgrid)**(1-sigma)
     # Replace too large values in Theta with large negative numbers
-    FC = (A * kgrid**alpha)/pk + (1-delta)*kgrid;
-    Theta(Theta > FC) = -1000;
-    !git add "main_vfi.py"
-!git commit -m "My commit"
-!git push origin master
-        
-        
-            
-
-
+    FC = (A * kgrid**alpha)/pk + (1-delta)*kgrid
+    Theta[Theta > FC] = -1000
 
 
 
